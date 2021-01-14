@@ -1,8 +1,8 @@
 
 import Foundation
-import Syntax
+import SyntaxTree
 
-extension Parser {
+extension SyntaxTreeFactory {
 
     public func attributedString(_ text: String, attributes: @escaping (Kind?, [String : Any]) -> [NSAttributedString.Key : Any]?) throws -> NSAttributedString {
         let format = AttributedStringFormat(attributes: attributes)

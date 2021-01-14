@@ -1,6 +1,6 @@
 
 import Foundation
-import Syntax
+import SyntaxTree
 
 protocol Format {
     associatedtype Output

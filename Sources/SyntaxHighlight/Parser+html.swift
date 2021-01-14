@@ -1,6 +1,6 @@
 
 import Foundation
-import Syntax
+import SyntaxTree
 
 public enum TokenType: Hashable, ExpressibleByStringLiteral {
     /// A keyword, such as `if`, `class`, `let` or attributes such as @available
@@ -29,7 +29,7 @@ public enum TokenType: Hashable, ExpressibleByStringLiteral {
     }
 }
 
-extension Parser {
+extension SyntaxTreeFactory {
 
     public func html(_ text: String, type: @escaping (Kind?, [String : Any]) -> TokenType?) throws -> String {
         let html = HTMLFormat(type: type)

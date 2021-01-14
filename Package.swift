@@ -11,12 +11,10 @@ let package = Package(
                  targets: ["SyntaxHighlight"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/nerdsupremacist/Syntax.git", .branch("develop")),
+        .package(url: "https://github.com/nerdsupremacist/SyntaxTree.git", .branch("main")),
     ],
     targets: [
         .target(name: "SyntaxHighlight",
-                dependencies: ["Syntax"]),
-        .testTarget(name: "SyntaxHighlightTests",
-                    dependencies: ["SyntaxHighlight"]),
+                dependencies: ["SyntaxTree"]),
     ]
 )

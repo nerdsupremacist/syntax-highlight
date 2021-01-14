@@ -1,11 +1,11 @@
 
 import Foundation
-import Syntax
+import SyntaxTree
 
-extension Parser {
+extension SyntaxTreeFactory {
 
     func highlight<F : Format>(_ text: String, using format: F) throws -> F.Output {
-        let tree = try syntaxTree(text)
+        let tree = try parse(text)
         var lastIndex = text.startIndex
         tree.visit(text, using: format) { range in
             format.add(text[lastIndex..<range.lowerBound])
