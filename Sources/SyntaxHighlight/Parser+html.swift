@@ -31,12 +31,12 @@ public enum TokenType: Hashable, ExpressibleByStringLiteral {
 
 extension Parser {
 
-    public func html(_ text: String, type: @escaping (String?, [String : String]) -> TokenType?) throws -> String {
+    public func html(_ text: String, type: @escaping (Kind?, [String : Any]) -> TokenType?) throws -> String {
         let html = HTMLFormat(type: type)
         return try highlight(text, using: html)
     }
 
-    public func html(_ text: String, type: @escaping (String?) -> TokenType?) throws -> String {
+    public func html(_ text: String, type: @escaping (Kind?) -> TokenType?) throws -> String {
         let html = HTMLFormat { kind, _ in type(kind) }
         return try highlight(text, using: html)
     }
@@ -54,14 +54,14 @@ extension TokenType {
 }
 
 private class HTMLFormat: Format {
-    private let type: (String?, [String : String]) -> TokenType?
+    private let type: (Kind?, [String : Any]) -> TokenType?
     private var html = ""
 
-    internal init(type: @escaping (String?, [String : String]) -> TokenType?) {
+    internal init(type: @escaping (Kind?, [String : Any]) -> TokenType?) {
         self.type = type
     }
 
-    func hasStyling(kind: String?, annotations: [String : String]) -> Bool {
+    func hasStyling(kind: Kind?, annotations: [String : Any]) -> Bool {
         return type(kind, annotations) != nil
     }
 
@@ -69,7 +69,7 @@ private class HTMLFormat: Format {
         html.append(String(text).escapingHTMLEntities())
     }
 
-    func add(_ text: Substring, kind: String?, annotations: [String : String]) {
+    func add(_ text: Substring, kind: Kind?, annotations: [String : Any]) {
         guard let type = type(kind, annotations) else {
             return add(text)
         }

@@ -4,12 +4,12 @@ import Syntax
 
 extension Parser {
 
-    public func attributedString(_ text: String, attributes: @escaping (String?, [String : String]) -> [NSAttributedString.Key : Any]?) throws -> NSAttributedString {
+    public func attributedString(_ text: String, attributes: @escaping (Kind?, [String : Any]) -> [NSAttributedString.Key : Any]?) throws -> NSAttributedString {
         let format = AttributedStringFormat(attributes: attributes)
         return try highlight(text, using: format)
     }
 
-    public func attributedString(_ text: String, attributes: @escaping (String?) -> [NSAttributedString.Key : Any]?) throws -> NSAttributedString {
+    public func attributedString(_ text: String, attributes: @escaping (Kind?) -> [NSAttributedString.Key : Any]?) throws -> NSAttributedString {
         let format = AttributedStringFormat { kind, _ in attributes(kind) }
         return try highlight(text, using: format)
     }
@@ -17,15 +17,15 @@ extension Parser {
 }
 
 private class AttributedStringFormat: Format {
-    private let attributes: (String?, [String : String]) -> [NSAttributedString.Key : Any]?
+    private let attributes: (Kind?, [String : Any]) -> [NSAttributedString.Key : Any]?
     private var string: NSMutableAttributedString
 
-    internal init(attributes: @escaping (String?, [String : String]) -> [NSAttributedString.Key : Any]?) {
+    internal init(attributes: @escaping (Kind?, [String : Any]) -> [NSAttributedString.Key : Any]?) {
         self.attributes = attributes
         self.string = NSMutableAttributedString()
     }
 
-    func hasStyling(kind: String?, annotations: [String : String]) -> Bool {
+    func hasStyling(kind: Kind?, annotations: [String : Any]) -> Bool {
         return attributes(kind, annotations) != nil
     }
 
@@ -33,7 +33,7 @@ private class AttributedStringFormat: Format {
         string.append(NSAttributedString(string: String(text)))
     }
 
-    func add(_ text: Substring, kind: String?, annotations: [String : String]) {
+    func add(_ text: Substring, kind: Kind?, annotations: [String : Any]) {
         guard let attributes = attributes(kind, annotations) else {
             return add(text)
         }
