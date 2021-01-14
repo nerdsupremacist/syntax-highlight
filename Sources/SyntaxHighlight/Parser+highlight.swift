@@ -52,8 +52,8 @@ extension SyntaxTree {
         var lastIndex = startIndex(in: text)
         let whenStyleChange = hasStyling ? { range in
             guard lastIndex < range.lowerBound else { return }
-            lastIndex = range.upperBound
             format.add(text[lastIndex..<range.lowerBound], kind: kind, annotations: annotations)
+            lastIndex = range.upperBound
         } : whenStyleChange
 
         for child in children {
