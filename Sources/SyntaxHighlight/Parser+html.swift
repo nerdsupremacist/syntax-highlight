@@ -66,10 +66,12 @@ private class HTMLFormat: Format {
     }
 
     func add(_ text: Substring) {
+        guard !text.isEmpty else { return }
         html.append(String(text).escapingHTMLEntities())
     }
 
     func add(_ text: Substring, kind: Kind?, annotations: [String : Any]) {
+        guard !text.isEmpty else { return }
         guard let type = type(kind, annotations) else {
             return add(text)
         }
@@ -96,6 +98,7 @@ private class HTMLFormat: Format {
 extension Substring {
 
     fileprivate func splitPrefix(of characterSet: CharacterSet) -> (prefix: Substring, new: Substring) {
+        guard !isEmpty else { return (self, self) }
         let splitIndex = firstIndex { !characterSet.contains($0) } ?? endIndex
 
         return (
@@ -105,6 +108,7 @@ extension Substring {
     }
 
     fileprivate func splitPostfix(of characterSet: CharacterSet) -> (postfix: Substring, new: Substring) {
+        guard !isEmpty else { return (self, self) }
         let lastNonPostFixIndex = lastIndex { !characterSet.contains($0) } ?? startIndex
         let splitIndex = index(after: lastNonPostFixIndex)
 
