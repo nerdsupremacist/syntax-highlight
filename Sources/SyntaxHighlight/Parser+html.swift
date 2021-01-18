@@ -96,20 +96,21 @@ private class HTMLFormat: Format {
 extension Substring {
 
     fileprivate func splitPrefix(of characterSet: CharacterSet) -> (prefix: Substring, new: Substring) {
-        let index = firstIndex { !characterSet.contains($0) } ?? endIndex
+        let splitIndex = firstIndex { !characterSet.contains($0) } ?? endIndex
 
         return (
-            self[startIndex..<index],
-            self[index...]
+            self[startIndex..<splitIndex],
+            self[splitIndex...]
         )
     }
 
     fileprivate func splitPostfix(of characterSet: CharacterSet) -> (postfix: Substring, new: Substring) {
-        let index = lastIndex { !characterSet.contains($0) } ?? startIndex
+        let lastNonPostFixIndex = lastIndex { !characterSet.contains($0) } ?? startIndex
+        let splitIndex = index(after: lastNonPostFixIndex)
 
         return (
-            self[index...],
-            self[startIndex..<index]
+            self[splitIndex...],
+            self[startIndex..<splitIndex]
         )
     }
 
