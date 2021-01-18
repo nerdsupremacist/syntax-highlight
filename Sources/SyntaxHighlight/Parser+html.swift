@@ -96,7 +96,7 @@ private class HTMLFormat: Format {
 extension Substring {
 
     fileprivate func splitPrefix(of characterSet: CharacterSet) -> (prefix: Substring, new: Substring) {
-        let index = firstIndex { !$0.unicodeScalars.allSatisfy { characterSet.contains($0) } } ?? startIndex
+        let index = firstIndex { !characterSet.contains($0) } ?? endIndex
 
         return (
             self[startIndex..<index],
@@ -105,14 +105,20 @@ extension Substring {
     }
 
     fileprivate func splitPostfix(of characterSet: CharacterSet) -> (postfix: Substring, new: Substring) {
-        let index = lastIndex { character in
-            return !character.unicodeScalars.allSatisfy { characterSet.contains($0) }
-        }.map { self.index(after: $0) } ?? endIndex
+        let index = lastIndex { !characterSet.contains($0) } ?? startIndex
 
         return (
             self[index...],
             self[startIndex..<index]
         )
+    }
+
+}
+
+extension CharacterSet {
+
+    fileprivate func contains(_ character: Character) -> Bool {
+        return character.unicodeScalars.allSatisfy { contains($0) }
     }
 
 }
