@@ -73,12 +73,46 @@ private class HTMLFormat: Format {
         guard let type = type(kind, annotations) else {
             return add(text)
         }
-        html.append("<span class=\"\(type.string)\">\(text.escapingHTMLEntities())</span>")
+
+        let (prefix, withoutPrefix) = text.splitPrefix(of: .whitespacesAndNewlines)
+        let (postfix, final) = withoutPrefix.splitPostfix(of: .whitespacesAndNewlines)
+
+        if !prefix.isEmpty {
+            add(prefix)
+        }
+
+        html.append("<span class=\"\(type.string)\">\(final.escapingHTMLEntities())</span>")
+
+        if !postfix.isEmpty {
+            add(prefix)
+        }
     }
 
     func build() -> String {
         return html
     }
+}
+
+extension Substring {
+
+    fileprivate func splitPrefix(of characterSet: CharacterSet) -> (prefix: Substring, new: Substring) {
+        let index = firstIndex { !$0.unicodeScalars.allSatisfy { characterSet.contains($0) } } ?? startIndex
+
+        return (
+            self[startIndex..<index],
+            self[index...]
+        )
+    }
+
+    fileprivate func splitPostfix(of characterSet: CharacterSet) -> (postfix: Substring, new: Substring) {
+        let index = lastIndex { !$0.unicodeScalars.allSatisfy { characterSet.contains($0) } } ?? startIndex
+
+        return (
+            self[index...],
+            self[startIndex..<index]
+        )
+    }
+
 }
 
 extension StringProtocol {
