@@ -105,7 +105,7 @@ extension Substring {
     }
 
     fileprivate func splitPostfix(of characterSet: CharacterSet) -> (postfix: Substring, new: Substring) {
-        let index = lastIndex { !$0.unicodeScalars.allSatisfy { characterSet.contains($0) } } ?? startIndex
+        let index = lastIndex { !$0.unicodeScalars.allSatisfy { characterSet.contains($0) } } ?? endIndex
 
         return (
             self[index...],
