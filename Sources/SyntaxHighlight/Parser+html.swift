@@ -84,7 +84,7 @@ private class HTMLFormat: Format {
         html.append("<span class=\"\(type.string)\">\(final.escapingHTMLEntities())</span>")
 
         if !postfix.isEmpty {
-            add(prefix)
+            add(postfix)
         }
     }
 
